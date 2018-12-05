@@ -91,7 +91,16 @@ public class DList2 {
   public void removeFront() {
     // Your solution here.
 
-    
+    if (size==0) {
+    	head.item = Integer.MIN_VALUE;
+	    head.next = head;
+	    head.prev = head;
+    }
+    else{
+    	head.next.next.prev = head;
+    	head.next = head.next.next;
+    	size--;
+    }
   }
 
   /**
