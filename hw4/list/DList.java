@@ -1,5 +1,6 @@
 /* DList.java */
-/*package list;*/
+
+package list;
 
 /**
  *  A DList is a mutable doubly-linked list ADT.  Its implementation is
@@ -51,11 +52,9 @@ public class DList {
    */
   public DList() {
     //  Your solution here.
-    head = new DListNode(Integer.MIN_VALUE, head, head);
-
-    head.next = head;
-    head.prev = head;
-
+  	head = newNode(Integer.MIN_VALUE, head, head);
+  	head.prev = head;
+  	head.next = head;
     size = 0;
   }
 
@@ -98,9 +97,9 @@ public class DList {
    */
   public void insertBack(Object item) {
     // Your solution here.
-
-    head.prev.next = new DListNode(item, head.next, head);
-    head.prev = head.prev.next;
+    DListNode newBack = new DListNode(item, head.prev, head);
+    head.prev.next = newBack;
+    head.prev = newBack;
 
     size++;
   }
@@ -116,11 +115,10 @@ public class DList {
    */
   public DListNode front() {
     // Your solution here.
-    if (isEmpty()) {
+    if(isEmpty())
       return null;
-    }else{
+    else
       return head.next;
-    }
   }
 
   /**
@@ -134,11 +132,10 @@ public class DList {
    */
   public DListNode back() {
     // Your solution here.
-    if (isEmpty()) {
+    if(isEmpty())
       return null;
-    }else{
+    else
       return head.prev;
-    }
   }
 
   /**
@@ -153,11 +150,10 @@ public class DList {
    */
   public DListNode next(DListNode node) {
     // Your solution here.
-    if (node==null || node.next==head) {
+    if(node.item==null || node.next==head)
       return null;
-    }else{
+    else
       return node.next;
-    }
   }
 
   /**
@@ -172,9 +168,9 @@ public class DList {
    */
   public DListNode prev(DListNode node) {
     // Your solution here.
-    if (node==null || node.prev==head) {
+    if(node.item==null || node.prev==head)
       return null;
-    }else
+    else
       return node.prev;
   }
 
@@ -187,11 +183,15 @@ public class DList {
    */
   public void insertAfter(Object item, DListNode node) {
     // Your solution here.
-    if (node!=null) {
-        node.next = new DListNode(item, node, node.next);
-        node.next.prev = node;
+    if(node.item!=null)
+      if(node.next==head)
+        insertBack(item);
+      else{
+        node.next.prev = new DListNode(item, node, node.next);
+        node.next = node.next.prev;
+
         size++;
-    }
+      }
   }
 
   /**
@@ -203,11 +203,15 @@ public class DList {
    */
   public void insertBefore(Object item, DListNode node) {
     // Your solution here.
-    if (node!=null) {
+    if(node.item!=null)
+      if(node.prev == head)
+        insertFront(item);
+      else{
         node.prev.next = new DListNode(item, node.prev, node);
         node.prev = node.prev.next;
+
         size++;
-    }
+      }
   }
 
   /**
@@ -216,9 +220,10 @@ public class DList {
    */
   public void remove(DListNode node) {
     // Your solution here.
-    if (node!=null) {
-      node.prev.next = node.next;
+    if(node.item!=null){
       node.next.prev = node.prev;
+      node.prev.next = node.next;
+      
       size--;
     }
   }
